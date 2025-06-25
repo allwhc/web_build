@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Water Tank Automation - MVS TECH</title>
+    <meta name="description" content="Smart Water Tank Automation solutions for homes and societies. Intelligent monitoring, automated pump control, and overflow prevention systems.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            background: #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #475569;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-outline {
+            border: 2px solid #2563eb;
+            color: #2563eb;
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #0369a1 100%);
+            color: white;
+            padding: 8rem 0 4rem;
+            margin-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Products Section */
+        .products {
+            padding: 6rem 0;
+            background: #f8fafc;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: #64748b;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s;
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .product-card p {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .product-features {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+        }
+
+        .product-features h4 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .product-features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .product-features li {
+            color: #475569;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Add Product Template */
+        .add-product-guide {
+            background: white;
+            border: 2px dashed #e2e8f0;
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .add-product-guide h3 {
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .code-template {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            text-align: left;
+            overflow-x: auto;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 16px;
+            background: #f8fafc;
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1e293b;
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            color: #60a5fa;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #60a5fa;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #475569;
+            color: #94a3b8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">MVS TECH</a>
+            <ul class="nav-links">
+                <li><a href="index.html">🏠 Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#categories">Categories</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-btn">☰</button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>💧 Smart Water Tank Automation</h1>
+                <p>Intelligent water management solutions for homes and societies with automated monitoring, pump control, and overflow prevention systems.</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+                    <a href="index.html#contact" class="btn btn-primary">Get Quote</a>
+                    <a href="tel:+918097412355" class="btn btn-outline">📞 Call Expert</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Water Tank Automation Products</h2>
+                <p class="section-subtitle">Complete range of smart water management solutions</p>
+            </div>
+            
+            <div class="products-grid">
+                <!-- Product 1: Basic Water Level Monitor -->
+                <div class="product-card">
+                    <img src="https://cdn-icons-png.flaticon.com/512/10983/10983547.png" alt="Basic Water Level Monitor" class="product-image">
+                    <h3>Basic Water Level Monitor</h3>
+                    <p>Essential water level monitoring system with SMS alerts and mobile app connectivity for homes and small societies.</p>
+                    
+                    <div class="product-features">
+                        <h4>🌟 Key Features:</h4>
+                        <ul>
+                            <li>✅ Real-time water level monitoring</li>
+                            <li>✅ SMS and app notifications</li>
+                            <li>✅ Battery backup (24 hours)</li>
+                            <li>✅ Easy installation</li>
+                            <li>✅ WiFi connectivity</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="video-container">
+                       <iframe 
+  width="100%" 
+  height="315" 
+  src="https://www.youtube.com/embed/5lW5eZO1MhE?list=PLripF-PnlNhnlkL-WRz-dWnLQ2a9hK_Nt" 
+  frameborder="0" 
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+  allowfullscreen>
+</iframe>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <a href="index.html#contact" class="btn btn-primary">Get Quote</a>
+                        <a href="tel:+918097412355" class="btn btn-outline">Call Now</a>
+                    </div>
+                </div>
+
+                <!-- Product 2: Smart Pump Controller -->
+                <div class="product-card">
+                    <img src="data:image/jpeg;base64,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" alt="Smart Pump Controller" class="product-image">
+                    <h3>Smart Pump Controller</h3>
+                    <p>Advanced automated pump control system with intelligent scheduling, overflow prevention, and energy optimization features.</p>
+                    
+                    <div class="product-features">
+                        <h4>🌟 Key Features:</h4>
+                        <ul>
+                            <li>✅ Automatic pump start/stop</li>
+                            <li>✅ Overflow prevention</li>
+                            <li>✅ Dry Run Protection</li>
+                            <li>✅ Remote control via app</li>
+                            <li>✅ Pump health monitoring</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/5lW5eZO1MhE?list=PLripF-PnlNhnlkL-WRz-dWnLQ2a9hK_Nt" allowfullscreen></iframe>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <a href="index.html#contact" class="btn btn-primary">Get Quote</a>
+                        <a href="tel:+918097412355" class="btn btn-outline">Call Now</a>
+                    </div>
+                </div>
+
+                
+
+                <!-- Product 3: Multi-Tank Management System -->
+                <div class="product-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY9Ap2VyfQVU0KH0o2Vg0YlLTi31OpfEPT2-i_ehsVm5pDzSF_XjGsCJ0OSROvQK6Nzhk&usqp=CAU" alt="Multi-Tank Management System" class="product-image">
+                    <h3>Multi-Tank Management System</h3>
+                    <p>Comprehensive solution for societies and commercial buildings with multiple tanks, centralized monitoring, and automated distribution.</p>
+                    
+                    <div class="product-features">
+                        <h4>🌟 Key Features:</h4>
+                        <ul>
+                            <li>✅ Monitor up to 10 tanks</li>
+                            <li>✅ Centralized dashboard</li>
+                            <li>✅ Automated load balancing</li>
+                            <li>✅ Usage analytics</li>
+                            <li>✅ Society management integration</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/5lW5eZO1MhE?list=PLripF-PnlNhnlkL-WRz-dWnLQ2a9hK_Nt" allowfullscreen></iframe>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <a href="index.html#contact" class="btn btn-primary">Get Quote</a>
+                        <a href="tel:+918097412355" class="btn btn-outline">Call Now</a>
+                    </div>
+                </div>
+            </div>
+
+            
+
+            <!-- 
+            <div class="add-product-guide">
+                <h3>📝 How to Add More Water Tank Products</h3>
+                <p style="color: #64748b; margin-bottom: 1.5rem;">Copy this template and customize it for new water tank automation products:</p>
+                
+                <div class="code-template">
+<pre style="margin: 0; color: #374151;">
+&lt;!-- New Water Tank Product Template --&gt;
+&lt;div class="product-card"&gt;
+    &lt;img src="YOUR_IMAGE_URL" alt="Product Name" class="product-image"&gt;
+    &lt;h3&gt;Your Product Name&lt;/h3&gt;
+    &lt;p&gt;Product description and benefits...&lt;/p&gt;
+    
+    &lt;div class="product-features"&gt;
+        &lt;h4&gt;🌟 Key Features:&lt;/h4&gt;
+        &lt;ul&gt;
+            &lt;li&gt;✅ Feature 1&lt;/li&gt;
+            &lt;li&gt;✅ Feature 2&lt;/li&gt;
+            &lt;li&gt;✅ Feature 3&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="video-container"&gt;
+        &lt;iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen&gt;&lt;/iframe&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="product-actions"&gt;
+        &lt;a href="index.html#contact" class="btn btn-primary"&gt;Get Quote&lt;/a&gt;
+        &lt;a href="tel:+918097412355" class="btn btn-outline"&gt;Call Now&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+                </div>
+                
+                <p style="color: #64748b; font-size: 0.9rem;">
+                    <strong>Steps:</strong> 1) Copy template above 2) Replace image URL & YouTube video ID 3) Update product name & description 4) Add your features list 5) Paste into products-grid section
+                </p>
+            </div>
+        </div>
+    </section>
+
+Add Product Guide -->
+
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Why Choose Our Water Tank Solutions?</h2>
+                <p class="section-subtitle">Advanced features that make water management effortless</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Mobile App Control</h3>
+                    <p>Monitor and control your water tanks from anywhere with our intuitive mobile application.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Energy Efficient</h3>
+                    <p>Smart algorithms optimize pump operation to reduce electricity consumption by up to 30%.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔔</div>
+                    <h3>Smart Alerts</h3>
+                    <p>Receive instant notifications for low water levels, pump failures, and system maintenance.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Overflow Protection</h3>
+                    <p>Advanced sensors prevent water wastage and potential damage from tank overflows.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Usage Analytics</h3>
+                    <p>Detailed reports on water consumption patterns and system performance metrics.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3>Easy Installation</h3>
+                    <p>Professional installation with minimal disruption to existing plumbing systems.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>MVS TECH</h4>
+                    <p style="color: #cbd5e1; line-height: 1.6;">Smart Water Tank Automation solutions for modern homes and societies.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <div class="footer-links">
+                        <a href="index.html">🏠 Home</a>
+                        <a href="index.html#about">About Us</a>
+                        <a href="index.html#categories">All Categories</a>
+                        <a href="index.html#contact">Contact Us</a>
+                    </div>
+                </div>
+               
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MVS TECH - Smart Water Tank Automation Solutions | Professional Technology by MV Solutions</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            // Add mobile menu functionality if needed
+            alert('Mobile menu - Navigate back to Home page');
+        }
+
+        // Smooth scrolling for anchor links
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('a[href^="#"]');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // For internal page links, redirect to home page with anchor
+                    if (this.getAttribute('href').includes('#')) {
+                        window.location.href = 'index.html' + this.getAttribute('href');
+                    }
+                });
+            });
+        });
+
+        // Product card animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const productCards = document.querySelectorAll('.product-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            productCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

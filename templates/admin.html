@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌊 Water Tank Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <style>
+        /* Enhanced Hero Background Controls */
+        .hero-background-controls {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+            align-items: end;
+        }
+
+        .gradient-builder-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .gradient-builder-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .background-examples {
+            margin-top: 10px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .background-examples h5 {
+            margin-bottom: 10px;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .example-gradients {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .example-gradient {
+            height: 40px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .example-gradient:hover {
+            border-color: #667eea;
+            transform: scale(1.05);
+        }
+
+        .example-gradient::after {
+            content: attr(data-name);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 2px;
+            font-size: 9px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .example-gradient:hover::after {
+            opacity: 1;
+        }
+
+        .gradient-input-wrapper {
+            position: relative;
+        }
+
+        .gradient-preview-mini {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+            pointer-events: none;
+        }
+
+        /* Enhanced color picker group */
+        .enhanced-color-group {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 10px;
+            align-items: end;
+        }
+
+        .quick-colors {
+            display: flex;
+            gap: 5px;
+            margin-top: 8px;
+        }
+
+        .quick-color {
+            width: 25px;
+            height: 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .quick-color:hover {
+            border-color: #667eea;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🌊 Water Tank Admin Panel</h1>
+            <p>Python Flask-based admin system with advanced gradient builder for managing website content</p>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab active" data-tab="hero">🎨 Hero Section</button>
+            <button class="tab" data-tab="contact">📞 Contact Info</button>
+            <button class="tab" data-tab="sections">📝 Section Titles</button>
+            <button class="tab" data-tab="products">🛠️ Products</button>
+            <button class="tab" data-tab="features">⭐ Features</button>
+            <button class="tab" data-tab="template">📄 Template</button>
+            <button class="tab" data-tab="generate">🚀 Generate</button>
+        </div>
+
+        <!-- Tab Contents -->
+        
+        <!-- Hero Section Tab -->
+        <div class="tab-content active" id="hero">
+            <div class="card">
+                <h3>🎨 Hero Section Settings</h3>
+                <div class="form-group">
+                    <label for="heroTitle">Hero Title</label>
+                    <input type="text" id="heroTitle" placeholder="Enter hero title">
+                </div>
+                <div class="form-group">
+                    <label for="heroSubtitle">Hero Subtitle</label>
+                    <textarea id="heroSubtitle" placeholder="Enter hero subtitle description"></textarea>
+                </div>
+                
+                <!-- Enhanced Background Control -->
+                <div class="form-group">
+                    <label for="heroBackground">Background Color/Gradient</label>
+                    <div class="hero-background-controls">
+                        <div class="gradient-input-wrapper">
+                            <input type="text" id="heroBackground" placeholder="e.g., linear-gradient(135deg, #0ea5e9, #0284c7)">
+                            <div class="gradient-preview-mini" id="gradientPreviewMini"></div>
+                        </div>
+                        <button type="button" class="gradient-builder-btn" onclick="openGradientBuilder()">
+                            🎨 Gradient Builder
+                        </button>
+                    </div>
+                    
+                    <!-- Quick Example Gradients -->
+                    <div class="background-examples">
+                        <h5>🌟 Quick Gradients</h5>
+                        <div class="example-gradients">
+                            <div class="example-gradient" 
+                                 style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #0369a1 100%)"
+                                 data-name="Ocean"
+                                 onclick="applyQuickGradient('linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #0369a1 100%)')">
+                            </div>
+                            <div class="example-gradient" 
+                                 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                                 data-name="Purple"
+                                 onclick="applyQuickGradient('linear-gradient(135deg, #667eea 0%, #764ba2 100%)')">
+                            </div>
+                            <div class="example-gradient" 
+                                 style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
+                                 data-name="Sunset"
+                                 onclick="applyQuickGradient('linear-gradient(135deg, #f093fb 0%, #f5576c 100%)')">
+                            </div>
+                            <div class="example-gradient" 
+                                 style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
+                                 data-name="Sky"
+                                 onclick="applyQuickGradient('linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)')">
+                            </div>
+                            <div class="example-gradient" 
+                                 style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
+                                 data-name="Green"
+                                 onclick="applyQuickGradient('linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)')">
+                            </div>
+                            <div class="example-gradient" 
+                                 style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)"
+                                 data-name="Warm"
+                                 onclick="applyQuickGradient('linear-gradient(135deg, #fa709a 0%, #fee140 100%)')">
+                            </div>
+                        </div>
+                        <small style="color: #718096;">
+                            Click any gradient above to apply instantly, or use the Gradient Builder for custom gradients.
+                        </small>
+                    </div>
+                </div>
+                
+                <!-- Enhanced Text Color Control -->
+                <div class="form-group">
+                    <label for="heroTextColor">Text Color</label>
+                    <div class="enhanced-color-group">
+                        <input type="text" id="heroTextColor" placeholder="e.g., #ffffff">
+                        <input type="color" class="color-picker" id="heroTextColorPicker" value="#ffffff">
+                        <button type="button" class="btn btn-secondary" onclick="autoContrastColor()">
+                            ✨ Auto Contrast
+                        </button>
+                    </div>
+                    <div class="quick-colors">
+                        <div class="quick-color" style="background: #ffffff" onclick="applyQuickTextColor('#ffffff')" title="White"></div>
+                        <div class="quick-color" style="background: #000000" onclick="applyQuickTextColor('#000000')" title="Black"></div>
+                        <div class="quick-color" style="background: #f1f5f9" onclick="applyQuickTextColor('#f1f5f9')" title="Light Gray"></div>
+                        <div class="quick-color" style="background: #1e293b" onclick="applyQuickTextColor('#1e293b')" title="Dark Gray"></div>
+                        <div class="quick-color" style="background: #fef3c7" onclick="applyQuickTextColor('#fef3c7')" title="Light Yellow"></div>
+                    </div>
+                </div>
+                
+                <!-- Live Preview -->
+                <div class="hero-preview" id="heroPreview">
+                    <h2 id="previewTitle">💧 Smart Water Tank Automation</h2>
+                    <p id="previewSubtitle">Intelligent water management solutions for homes and societies</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Info Tab -->
+        <div class="tab-content" id="contact">
+            <div class="card">
+                <h3>📞 Contact Information</h3>
+                <div class="form-group">
+                    <label for="companyName">Company Name</label>
+                    <input type="text" id="companyName" placeholder="Enter company name">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" placeholder="Enter phone number">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter email address">
+                </div>
+                <p class="help-text">
+                    <strong>Note:</strong> Phone number and company name will be updated throughout the entire website automatically.
+                </p>
+            </div>
+        </div>
+
+        <!-- Sections Tab -->
+        <div class="tab-content" id="sections">
+            <div class="grid">
+                <div class="card">
+                    <h3>🛠️ Products Section</h3>
+                    <div class="form-group">
+                        <label for="productsTitle">Section Title</label>
+                        <input type="text" id="productsTitle" placeholder="Enter products section title">
+                    </div>
+                    <div class="form-group">
+                        <label for="productsSubtitle">Section Subtitle</label>
+                        <input type="text" id="productsSubtitle" placeholder="Enter products section subtitle">
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>⭐ Features Section</h3>
+                    <div class="form-group">
+                        <label for="featuresTitle">Section Title</label>
+                        <input type="text" id="featuresTitle" placeholder="Enter features section title">
+                    </div>
+                    <div class="form-group">
+                        <label for="featuresSubtitle">Section Subtitle</label>
+                        <input type="text" id="featuresSubtitle" placeholder="Enter features section subtitle">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Tab -->
+        <div class="tab-content" id="products">
+            <div class="card">
+                <div class="section-header">
+                    <h3>🛠️ Manage Products</h3>
+                    <button class="btn btn-primary" onclick="addProduct()">➕ Add New Product</button>
+                </div>
+                <div id="productsList"></div>
+            </div>
+        </div>
+
+        <!-- Features Tab -->
+        <div class="tab-content" id="features">
+            <div class="card">
+                <div class="section-header">
+                    <h3>⭐ Manage Features</h3>
+                    <button class="btn btn-primary" onclick="addFeature()">➕ Add New Feature</button>
+                </div>
+                <div id="featuresList"></div>
+            </div>
+        </div>
+
+        <!-- Template Tab -->
+        <div class="tab-content" id="template">
+            <div class="card">
+                <h3>📄 Template Management</h3>
+                <p class="help-text">
+                    Upload a new HTML template (optional). The system will use your uploaded template or the default one.
+                </p>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="upload-area" onclick="document.getElementById('templateFile').click()">
+                        <div class="upload-icon">📄</div>
+                        <h4>Drop HTML file here or click to upload</h4>
+                        <p class="upload-help">Only HTML files are supported</p>
+                        <input type="file" id="templateFile" name="template" accept=".html" style="display: none;">
+                        <button type="button" class="btn btn-secondary">Choose File</button>
+                    </div>
+                </form>
+                <div id="uploadStatus"></div>
+            </div>
+        </div>
+
+        <!-- Generate Tab -->
+        <div class="tab-content" id="generate">
+            <div class="card">
+                <h3>🚀 Generate & Download Website</h3>
+                <p class="help-text">
+                    Preview your changes and download the generated website HTML file.
+                </p>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="previewWebsite()">👁️ Preview Website</button>
+                    <button class="btn btn-success" onclick="generateWebsite()">💾 Generate & Download</button>
+                    <button class="btn btn-secondary" onclick="resetToDefaults()">🔄 Reset to Defaults</button>
+                </div>
+                <div class="loading" id="generateLoading">
+                    <div class="spinner"></div>
+                    <p>Generating your website...</p>
+                </div>
+                <div id="generateStatus"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Edit Item</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="previewModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>Website Preview</h3>
+                <button class="close-btn" onclick="closePreview()">&times;</button>
+            </div>
+            <div class="preview-container">
+                <iframe id="previewFrame"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/config.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/products.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/features.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
+    <!-- Enhanced Gradient Builder -->
+    <script>
+        // Quick gradient application
+        function applyQuickGradient(gradient) {
+            const heroBackground = document.getElementById('heroBackground');
+            if (heroBackground) {
+                heroBackground.value = gradient;
+                updateHeroPreview();
+                updateGradientPreviewMini();
+                saveConfiguration();
+                showStatus('Quick gradient applied!', 'success');
+            }
+        }
+
+        // Quick text color application
+        function applyQuickTextColor(color) {
+            const heroTextColor = document.getElementById('heroTextColor');
+            const heroTextColorPicker = document.getElementById('heroTextColorPicker');
+            if (heroTextColor && heroTextColorPicker) {
+                heroTextColor.value = color;
+                heroTextColorPicker.value = color;
+                updateHeroPreview();
+                saveConfiguration();
+                showStatus('Text color applied!', 'success');
+            }
+        }
+
+        // Auto contrast color
+        function autoContrastColor() {
+            const background = document.getElementById('heroBackground')?.value || '#0ea5e9';
+            
+            // Simple contrast logic
+            let contrastColor = '#ffffff';
+            
+            if (background.includes('#')) {
+                // Extract first color from gradient or use solid color
+                const colorMatch = background.match(/#[a-fA-F0-9]{6}|#[a-fA-F0-9]{3}/);
+                if (colorMatch) {
+                    const hex = colorMatch[0];
+                    const r = parseInt(hex.slice(1, 3), 16);
+                    const g = parseInt(hex.slice(3, 5), 16);
+                    const b = parseInt(hex.slice(5, 7), 16);
+                    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+                    contrastColor = brightness > 128 ? '#000000' : '#ffffff';
+                }
+            }
+            
+            applyQuickTextColor(contrastColor);
+        }
+
+        // Update mini gradient preview
+        function updateGradientPreviewMini() {
+            const background = document.getElementById('heroBackground')?.value;
+            const preview = document.getElementById('gradientPreviewMini');
+            
+            if (background && preview) {
+                if (background.includes('gradient') || background.includes('#')) {
+                    preview.style.background = background;
+                    preview.style.display = 'block';
+                } else {
+                    preview.style.display = 'none';
+                }
+            }
+        }
+
+        // Enhanced hero preview update
+        function updateHeroPreview() {
+            const preview = document.getElementById('heroPreview');
+            const titleEl = document.getElementById('previewTitle');
+            const subtitleEl = document.getElementById('previewSubtitle');
+            
+            if (!preview || !titleEl || !subtitleEl) return;
+            
+            const titleInput = document.getElementById('heroTitle');
+            const subtitleInput = document.getElementById('heroSubtitle');
+            const backgroundInput = document.getElementById('heroBackground');
+            const textColorInput = document.getElementById('heroTextColor');
+            
+            const title = titleInput?.value || '💧 Smart Water Tank Automation';
+            const subtitle = subtitleInput?.value || 'Intelligent water management solutions for homes and societies';
+            const background = backgroundInput?.value || 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #0369a1 100%)';
+            const textColor = textColorInput?.value || '#ffffff';
+            
+            titleEl.textContent = title;
+            subtitleEl.textContent = subtitle;
+            preview.style.background = background;
+            preview.style.color = textColor;
+            
+            // Update mini preview
+            updateGradientPreviewMini();
+        }
+
+        // Initialize enhanced features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update preview on input changes
+            const heroInputs = ['heroTitle', 'heroSubtitle', 'heroBackground', 'heroTextColor'];
+            
+            heroInputs.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('input', updateHeroPreview);
+                }
+            });
+
+            // Color picker sync
+            const textPicker = document.getElementById('heroTextColorPicker');
+            if (textPicker) {
+                textPicker.addEventListener('change', function() {
+                    const textInput = document.getElementById('heroTextColor');
+                    if (textInput) {
+                        textInput.value = this.value;
+                        updateHeroPreview();
+                    }
+                });
+            }
+
+            // Initial preview update
+            updateHeroPreview();
+            
+            // Load gradient builder
+            const script = document.createElement('script');
+            script.textContent = `
+                ${gradientBuilderIntegrationCode}
+            `;
+            document.body.appendChild(script);
+        });
+    </script>
+<script src="{{ url_for('static', filename='js/gradient-builder.js') }}"></script>
+</body>
+</html>

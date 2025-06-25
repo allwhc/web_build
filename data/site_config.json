@@ -1,0 +1,101 @@
+{
+  "contact": {
+    "companyName": "MVS TECH",
+    "email": "info@mvstech.com",
+    "phone": "+918097412355"
+  },
+  "features": [
+    {
+      "description": "Monitor and control your water tanks from anywhere with our intuitive mobile application.",
+      "icon": "📱",
+      "id": 1,
+      "title": "Mobile App Control"
+    },
+    {
+      "description": "Smart algorithms optimize pump operation to reduce electricity consumption by up to 30%.",
+      "icon": "⚡",
+      "id": 2,
+      "title": "Energy Efficient"
+    },
+    {
+      "description": "Receive instant notifications for low water levels, pump failures, and system maintenance.",
+      "icon": "🔔",
+      "id": 3,
+      "title": "Smart Alerts"
+    },
+    {
+      "description": "Advanced sensors prevent water wastage and potential damage from tank overflows.",
+      "icon": "🛡️",
+      "id": 4,
+      "title": "Overflow Protection"
+    },
+    {
+      "description": "Detailed reports on water consumption patterns and system performance metrics.",
+      "icon": "📊",
+      "id": 5,
+      "title": "Usage Analytics"
+    },
+    {
+      "description": "Professional installation with minimal disruption to existing plumbing systems.",
+      "icon": "🔧",
+      "id": 6,
+      "title": "Easy Installation"
+    }
+  ],
+  "hero": {
+    "backgroundColor": "linear-gradient(219deg, #fa709a 61%, #fee140 100%)",
+    "subtitle": "Intelligent water management solutions for homes and societies with automated monitoring, pump control, and overflow prevention systems.",
+    "textColor": "#000000",
+    "title": "💧 Smart Water Tank Automation"
+  },
+  "products": [
+    {
+      "description": "Essential water level monitoring system with SMS alerts and mobile app connectivity for homes and small societies.",
+      "features": [
+        "Real-time water level monitoring",
+        "SMS and app notifications",
+        "Battery backup (24 hours)",
+        "Easy installation",
+        "WiFi connectivity"
+      ],
+      "id": 1,
+      "image": "https://cdn-icons-png.flaticon.com/512/10983/10983547.png",
+      "name": "Basic Water Level Monitor",
+      "videoId": "5lW5eZO1MhE"
+    },
+    {
+      "description": "Advanced automated pump control system with intelligent scheduling, overflow prevention, and energy optimization features.",
+      "features": [
+        "Automatic pump start/stop",
+        "Overflow prevention",
+        "Dry Run Protection",
+        "Remote control via app",
+        "Pump health monitoring"
+      ],
+      "id": 2,
+      "image": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=300&h=200&fit=crop&crop=center",
+      "name": "Smart Pump Controller",
+      "videoId": "5lW5eZO1MhE"
+    },
+    {
+      "description": "Comprehensive solution for societies and commercial buildings with multiple tanks, centralized monitoring, and automated distribution.",
+      "features": [
+        "Monitor up to 10 tanks",
+        "Centralized dashboard",
+        "Automated load balancing",
+        "Usage analytics",
+        "Society management integration"
+      ],
+      "id": 3,
+      "image": "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=300&h=200&fit=crop&crop=center",
+      "name": "Multi-Tank Management System",
+      "videoId": "5lW5eZO1MhE"
+    }
+  ],
+  "sections": {
+    "featuresSubtitle": "Advanced features that make water management effortless",
+    "featuresTitle": "Why Choose Our Water Tank Solutions?",
+    "productsSubtitle": "Complete range of smart water management solutions",
+    "productsTitle": "Water Tank Automation Products"
+  }
+}

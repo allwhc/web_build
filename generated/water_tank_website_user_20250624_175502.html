@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Water Tank Automation - MVS TECH</title>
+    <meta name="description" content="Smart Water Tank Automation solutions for homes and societies. Intelligent monitoring, automated pump control, and overflow prevention systems.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            background: #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #475569;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-outline {
+            border: 2px solid #2563eb;
+            color: #2563eb;
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(219deg, #fa709a 61%, #fee140 100%);
+            color: #000000;
+            padding: 8rem 0 4rem;
+            margin-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Products Section */
+        .products {
+            padding: 6rem 0;
+            background: #f8fafc;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: #64748b;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s;
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .product-card p {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .product-features {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+        }
+
+        .product-features h4 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .product-features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .product-features li {
+            color: #475569;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Add Product Template */
+        .add-product-guide {
+            background: white;
+            border: 2px dashed #e2e8f0;
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .add-product-guide h3 {
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .code-template {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            text-align: left;
+            overflow-x: auto;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 16px;
+            background: #f8fafc;
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1e293b;
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            color: #60a5fa;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #60a5fa;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #475569;
+            color: #94a3b8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">MVS TECH</a>
+            <ul class="nav-links">
+                <li><a href="index.html">🏠 Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#categories">Categories</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-btn">☰</button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>💧 Smart Water Tank Automation</h1>
+                <p>Intelligent water management solutions for homes and societies with automated monitoring, pump control, and overflow prevention systems.</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+                    <a href="index.html#contact" class="btn btn-primary">Get Quote</a>
+                    <a href="tel:+918097412355" class="btn btn-outline">📞 Call Expert</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Water Tank Automation Products</h2>
+                <p class="section-subtitle">Complete range of smart water management solutions</p>
+            </div>
+            
+            <div class="products-grid">
+                <div class="product-card">
+                    <img src="https://cdn-icons-png.flaticon.com/512/10983/10983547.png" alt="Basic Water Level Monitor" class="product-image">
+                    <h3>Basic Water Level Monitor</h3>
+                    <p>Essential water level monitoring system with SMS alerts and mobile app connectivity for homes and small societies.</p>
+                    
+                    <div class="product-features">
+                        <h4>🌟 Key Features:</h4>
+                        <ul>
+                            <li>✅ Real-time water level monitoring</li>
+                            <li>✅ SMS and app notifications</li>
+                            <li>✅ Battery backup (24 hours)</li>
+                            <li>✅ Easy installation</li>
+                            <li>✅ WiFi connectivity</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/5lW5eZO1MhE?list=PLripF-PnlNhnlkL-WRz-dWnLQ2a9hK_Nt" allowfullscreen></iframe>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <a href="index.html#contact" class="btn btn-primary">Get Quote</a>
+                        <a href="tel:+918097412355" class="btn btn-outline">Call Now</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=300&h=200&fit=crop&crop=center" alt="Smart Pump Controller" class="product-image">
+                    <h3>Smart Pump Controller</h3>
+                    <p>Advanced automated pump control system with intelligent scheduling, overflow prevention, and energy optimization features.</p>
+                    
+                    <div class="product-features">
+                        <h4>🌟 Key Features:</h4>
+                        <ul>
+                            <li>✅ Automatic pump start/stop</li>
+                            <li>✅ Overflow prevention</li>
+                            <li>✅ Dry Run Protection</li>
+                            <li>✅ Remote control via app</li>
+                            <li>✅ Pump health monitoring</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/5lW5eZO1MhE?list=PLripF-PnlNhnlkL-WRz-dWnLQ2a9hK_Nt" allowfullscreen></iframe>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <a href="index.html#contact" class="btn btn-primary">Get Quote</a>
+                        <a href="tel:+918097412355" class="btn btn-outline">Call Now</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=300&h=200&fit=crop&crop=center" alt="Multi-Tank Management System" class="product-image">
+                    <h3>Multi-Tank Management System</h3>
+                    <p>Comprehensive solution for societies and commercial buildings with multiple tanks, centralized monitoring, and automated distribution.</p>
+                    
+                    <div class="product-features">
+                        <h4>🌟 Key Features:</h4>
+                        <ul>
+                            <li>✅ Monitor up to 10 tanks</li>
+                            <li>✅ Centralized dashboard</li>
+                            <li>✅ Automated load balancing</li>
+                            <li>✅ Usage analytics</li>
+                            <li>✅ Society management integration</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/5lW5eZO1MhE?list=PLripF-PnlNhnlkL-WRz-dWnLQ2a9hK_Nt" allowfullscreen></iframe>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <a href="index.html#contact" class="btn btn-primary">Get Quote</a>
+                        <a href="tel:+918097412355" class="btn btn-outline">Call Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+Add Product Guide -->
+
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Why Choose Our Water Tank Solutions?</h2>
+                <p class="section-subtitle">Advanced features that make water management effortless</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Mobile App Control</h3>
+                    <p>Monitor and control your water tanks from anywhere with our intuitive mobile application.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Energy Efficient</h3>
+                    <p>Smart algorithms optimize pump operation to reduce electricity consumption by up to 30%.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔔</div>
+                    <h3>Smart Alerts</h3>
+                    <p>Receive instant notifications for low water levels, pump failures, and system maintenance.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Overflow Protection</h3>
+                    <p>Advanced sensors prevent water wastage and potential damage from tank overflows.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Usage Analytics</h3>
+                    <p>Detailed reports on water consumption patterns and system performance metrics.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3>Easy Installation</h3>
+                    <p>Professional installation with minimal disruption to existing plumbing systems.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>MVS TECH</h4>
+                    <p style="color: #cbd5e1; line-height: 1.6;">Smart Water Tank Automation solutions for modern homes and societies.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <div class="footer-links">
+                        <a href="index.html">🏠 Home</a>
+                        <a href="index.html#about">About Us</a>
+                        <a href="index.html#categories">All Categories</a>
+                        <a href="index.html#contact">Contact Us</a>
+                    </div>
+                </div>
+               
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MVS TECH - Smart Water Tank Automation Solutions | Professional Technology by MV Solutions</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            // Add mobile menu functionality if needed
+            alert('Mobile menu - Navigate back to Home page');
+        }
+
+        // Smooth scrolling for anchor links
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('a[href^="#"]');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // For internal page links, redirect to home page with anchor
+                    if (this.getAttribute('href').includes('#')) {
+                        window.location.href = 'index.html' + this.getAttribute('href');
+                    }
+                });
+            });
+        });
+
+        // Product card animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const productCards = document.querySelectorAll('.product-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            productCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
